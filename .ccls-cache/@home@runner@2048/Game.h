@@ -14,7 +14,7 @@ public:
 
 private:
   std::array<int, 16> board;
-  void merge();
+  void merge(int pos, int nbr);
   void moveLeft();
   void moveRight();
   void moveUp();

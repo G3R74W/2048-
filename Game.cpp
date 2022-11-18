@@ -17,7 +17,7 @@ void Game::start() {
 }
 
 void Game::display() {
-  std::array<int, 16> board = getBoard();
+  // std::array<int, 16> board = getBoard();
   // display score, number of moves made, full grid
   int k = 0;
   for (int i = 0; i < 4; i++) {
@@ -53,9 +53,37 @@ std::array<int, 16> Game::getBoard() { return board; }
 
 void Game::setBoard(int pos, int nbr) { board[pos] = nbr; }
 
-void Game::move() {}
-void Game::merge() {}
-void Game::moveLeft() {}
+void Game::move() {
+  char direction;
+  std::cout << "direction ?" << std::endl;
+  std::cin >> direction;
+
+  switch (direction) {
+  case 'q':
+    moveLeft();
+    break;
+  }
+}
+void Game::merge(int pos, int nbr) { setBoard(pos, nbr); }
+
+void Game::moveLeft() {
+  int k = 3;
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; k - j > k - 3; j++) {
+      if (board[k - (j + 1)] == 0 && board[k - j] != 0) {
+        setBoard(k - (j + 1), board[k - j]);
+        setBoard(k - j, 0);
+      }
+      if (board[k - (j + 1)] == board[k - j] && board[k - (j + 1)] != 0) {
+        int pos = k - (j + 1);
+        int nbr = 2 * board[k - j];
+        merge(pos, nbr);
+        setBoard(k - j, 0);
+      }
+    }
+    k += 4;
+  }
+}
 void Game::moveRight() {}
 void Game::moveUp() {}
 void Game::moveDown() {}
