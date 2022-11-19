@@ -16,9 +16,19 @@ void Game::start() {
   setBoard(pos1, 2);
   setBoard(pos2, 2);
 }
-
+void Game::place() {
+  int pos;
+  bool place = false;
+  srand(time(0));
+  while (!place) {
+    pos = rand() % 15;
+    if (board[pos] == 0) {
+      place = true;
+    }
+  }
+  board[pos] = 2;
+}
 void Game::display() {
-  // std::array<int, 16> board = getBoard();
   // display score, number of moves made, full grid
   int k = 0;
   for (int i = 0; i < 4; i++) {

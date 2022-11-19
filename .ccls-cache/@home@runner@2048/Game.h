@@ -12,6 +12,7 @@ public:
   void move();
   std::array<int, 16> getBoard();
   void setBoard(int pos, int nbr);
+  void place();
 
 private:
   std::array<int, 16> board;

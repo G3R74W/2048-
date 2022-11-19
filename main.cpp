@@ -6,6 +6,7 @@ int main() {
   while (game.play) {
     game.display();
     game.move();
+    game.place();
   }
   return 0;
 }
