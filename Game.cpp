@@ -62,6 +62,9 @@ void Game::move() {
   case 'q':
     moveLeft();
     break;
+  case 'd':
+    moveRight();
+    break;
   }
 }
 void Game::merge(int pos, int nbr) { setBoard(pos, nbr); }
@@ -84,6 +87,23 @@ void Game::moveLeft() {
     k += 4;
   }
 }
-void Game::moveRight() {}
+void Game::moveRight() {
+  int k = 0;
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; k + j < k + 3; j++) {
+      if (board[k + (j + 1)] == 0 && board[k + j] != 0) {
+        setBoard(k + (j + 1), board[k + j]);
+        setBoard(k + j, 0);
+      }
+      if (board[k + (j + 1)] == board[k + j] && board[k + (j + 1)] != 0) {
+        int pos = k + (j + 1);
+        int nbr = 2 * board[k + j];
+        merge(pos, nbr);
+        setBoard(k + j, 0);
+      }
+    }
+    k += 4;
+  }
+}
 void Game::moveUp() {}
 void Game::moveDown() {}

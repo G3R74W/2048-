@@ -5,6 +5,6 @@ int main() {
   game.start();
   game.display();
   game.move();
-  game.display()
+  game.display();
   return 0;
 }
