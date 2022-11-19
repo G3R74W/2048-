@@ -3,8 +3,9 @@
 int main() {
   Game game;
   game.start();
-  game.display();
-  game.move();
-  game.display();
+  while (game.play) {
+    game.display();
+    game.move();
+  }
   return 0;
 }

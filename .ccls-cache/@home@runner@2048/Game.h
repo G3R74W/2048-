@@ -6,6 +6,7 @@
 class Game {
 public:
   Game();
+  bool play;
   void start();
   void display();
   void move();
