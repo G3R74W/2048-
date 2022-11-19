@@ -134,4 +134,21 @@ void Game::moveUp() {
     k++;
   }
 }
-void Game::moveDown() {}
+void Game::moveDown() {
+  int k = 0;
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; k + j < k + 12; j += 4) {
+      if (board[k + (j + 4)] == 0 && board[k + j] != 0) {
+        setBoard(k + (j + 4), board[k + j]);
+        setBoard(k + j, 0);
+      }
+      if (board[k + (j + 4)] == board[k + j] && board[k + (j + 4)] != 0) {
+        int pos = k + (j + 4);
+        int nbr = 2 * board[k + j];
+        merge(pos, nbr);
+        setBoard(k + j, 0);
+      }
+    }
+    k++;
+  }
+}
