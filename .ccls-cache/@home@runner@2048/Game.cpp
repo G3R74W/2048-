@@ -1,7 +1,8 @@
 #include "Game.h"
 
 Game::Game()
-    : board({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), play(true) {}
+    : board({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), play(true),
+      _moves(0), _score(0) {}
 
 void Game::start() {
   // getting 2 different random numbers between 0 & 15 to determine where the
@@ -29,6 +30,11 @@ void Game::place() {
   board[pos] = 2;
 }
 void Game::display() {
+  std::cout << "---------------------------------------" << std::endl;
+  // display score and number of moves
+  std::cout << "score : " << _score << std::endl;
+  std::cout << "number of moves : " << _moves << std::endl;
+  std::cout << "\n\n";
   // display score, number of moves made, full grid
   int k = 0;
   for (int i = 0; i < 4; i++) {
@@ -62,6 +68,7 @@ void Game::display() {
     }
     std::cout << "\n";
   }
+  std::cout << "---------------------------------------" << std::endl;
 }
 
 std::array<int, 16> Game::getBoard() { return board; }
@@ -76,23 +83,30 @@ void Game::move() {
   switch (direction) {
   case 'q':
     std::cout << "left" << std::endl;
+    _moves++;
     moveLeft();
     break;
   case 'd':
     std::cout << "right" << std::endl;
+    _moves++;
     moveRight();
     break;
   case 'z':
     std::cout << "up" << std::endl;
+    _moves++;
     moveUp();
     break;
   case 's':
     std::cout << "down" << std::endl;
+    _moves++;
     moveDown();
     break;
   }
 }
-void Game::merge(int pos, int nbr) { setBoard(pos, nbr); }
+void Game::merge(int pos, int nbr) {
+  setBoard(pos, nbr);
+  _score += nbr;
+}
 
 void Game::moveLeft() {
   int k = 3;
@@ -145,6 +159,7 @@ void Game::moveRight() {
           merge(pos, nbr);
           setBoard(k + j, 0);
           mergeCntr++;
+          j = 0;
         }
       }
     }

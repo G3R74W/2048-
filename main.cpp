@@ -1,7 +1,6 @@
 #include "Game.h"
 
 int main() {
-  std::cout << "test" << std::endl;
   Game game;
   game.start();
   while (game.play) {
