@@ -39,7 +39,11 @@ void Game::display() {
     for (int j = 0; j < 4; j++) {
       // setting up display correctly for each numbers
       if (board[k] < 10) {
-        std::cout << "|  " << board[k] << "  |";
+        if (board[k] != 0) {
+          std::cout << "|  " << board[k] << "  |";
+        } else {
+          std::cout << "|     |";
+        }
       }
       if (board[k] >= 10 && board[k] < 100) {
         std::cout << "| " << board[k] << "  |";
@@ -92,17 +96,33 @@ void Game::merge(int pos, int nbr) { setBoard(pos, nbr); }
 
 void Game::moveLeft() {
   int k = 3;
+  // count the number of merges made
+  // only one merge is allowed
+  int mergeCntr;
   for (int i = 0; i < 4; i++) {
+    mergeCntr = 0;
     for (int j = 0; k - j > k - 3; j++) {
       if (board[k - (j + 1)] == 0 && board[k - j] != 0) {
         setBoard(k - (j + 1), board[k - j]);
         setBoard(k - j, 0);
       }
       if (board[k - (j + 1)] == board[k - j] && board[k - (j + 1)] != 0) {
-        int pos = k - (j + 1);
-        int nbr = 2 * board[k - j];
-        merge(pos, nbr);
-        setBoard(k - j, 0);
+        int pos, nbr, setPos;
+        if (board[k - (j + 2)] == board[k - (j + 1)] &&
+            board[k - (j + 2)] != 0) {
+          pos = k - (j + 2);
+          nbr = 2 * board[k - (j + 1)];
+          setPos = k - (j + 1);
+        } else {
+          pos = k - (j + 1);
+          nbr = 2 * board[k - j];
+          setPos = k - j;
+        }
+        if (mergeCntr == 0) {
+          merge(pos, nbr);
+          setBoard(setPos, 0);
+          mergeCntr++;
+        }
       }
     }
     k += 4;
@@ -110,7 +130,9 @@ void Game::moveLeft() {
 }
 void Game::moveRight() {
   int k = 0;
+  int mergeCntr;
   for (int i = 0; i < 4; i++) {
+    mergeCntr = 0;
     for (int j = 0; k + j < k + 3; j++) {
       if (board[k + (j + 1)] == 0 && board[k + j] != 0) {
         setBoard(k + (j + 1), board[k + j]);
@@ -119,8 +141,11 @@ void Game::moveRight() {
       if (board[k + (j + 1)] == board[k + j] && board[k + (j + 1)] != 0) {
         int pos = k + (j + 1);
         int nbr = 2 * board[k + j];
-        merge(pos, nbr);
-        setBoard(k + j, 0);
+        if (mergeCntr == 0) {
+          merge(pos, nbr);
+          setBoard(k + j, 0);
+          mergeCntr++;
+        }
       }
     }
     k += 4;
@@ -128,7 +153,9 @@ void Game::moveRight() {
 }
 void Game::moveUp() {
   int k = 12;
+  int mergeCntr;
   for (int i = 0; i < 4; i++) {
+    mergeCntr = 0;
     for (int j = 0; k - j > k - 12; j += 4) {
       if (board[k - (j + 4)] == 0 && board[k - j] != 0) {
         setBoard(k - (j + 4), board[k - j]);
@@ -137,8 +164,11 @@ void Game::moveUp() {
       if (board[k - (j + 4)] == board[k - j] && board[k - (j + 4)] != 0) {
         int pos = k - (j + 4);
         int nbr = 2 * board[k - j];
-        merge(pos, nbr);
-        setBoard(k - j, 0);
+        if (mergeCntr == 0) {
+          merge(pos, nbr);
+          setBoard(k - j, 0);
+          mergeCntr++;
+        }
       }
     }
     k++;
@@ -146,7 +176,9 @@ void Game::moveUp() {
 }
 void Game::moveDown() {
   int k = 0;
+  int mergeCntr;
   for (int i = 0; i < 4; i++) {
+    mergeCntr = 0;
     for (int j = 0; k + j < k + 12; j += 4) {
       if (board[k + (j + 4)] == 0 && board[k + j] != 0) {
         setBoard(k + (j + 4), board[k + j]);
@@ -155,10 +187,30 @@ void Game::moveDown() {
       if (board[k + (j + 4)] == board[k + j] && board[k + (j + 4)] != 0) {
         int pos = k + (j + 4);
         int nbr = 2 * board[k + j];
-        merge(pos, nbr);
-        setBoard(k + j, 0);
+        if (mergeCntr == 0) {
+          merge(pos, nbr);
+          setBoard(k + j, 0);
+          mergeCntr++;
+        }
       }
     }
     k++;
+  }
+}
+
+void Game::checkPlay() {
+  // checks if the game is not lost or if there is a win
+  for (int i = 0; i < 16; i++) {
+    if (board[i] == 2048) {
+      play = false;
+    }
+    if (board[i] != 0) {
+      play = false;
+    } else {
+      play = true;
+    }
+    if (play) {
+      break;
+    }
   }
 }

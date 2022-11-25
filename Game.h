@@ -13,6 +13,7 @@ public:
   std::array<int, 16> getBoard();
   void setBoard(int pos, int nbr);
   void place();
+  void checkPlay();
 
 private:
   std::array<int, 16> board;
